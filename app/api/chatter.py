@@ -5,7 +5,7 @@ chatter = Chatter(fallback=True)
 
 @chatter.base(name='홈')
 def home_keyboard():
-    home_buttons = ['식단 보기', '다른 기능']
+    home_buttons = ['오늘의 식단', '다른 식단 보기', '다른 기능']
     return Keyboard(home_buttons)
 
 
@@ -16,13 +16,34 @@ def etc(data):
     return text + buttons
 
 
-@chatter.rule(action='식단 보기', src='홈', dest='식단')
-def menu(data):
+@chatter.rule(action='다른 식단 보기', src='홈', dest='다른식단')
+def other(data):
     text = Text('구현중입니다! 조금만 기다려주세요. (야옹)')
     msg_button = MessageButton(label='이번주 식단 보기',
                                url='http://apps.hongik.ac.kr/food/food.php')
-    keyboard = chatter.home()
+    keyboard = Keyboard(['내일의 식단', '이번주 식단'])
     return text + msg_button + keyboard
+
+
+@chatter.rule(action=['내일의 식단', '이번주 식단'], src='다른식단', dest='홈')
+def other_step2(data):
+    text = Text('')
+    keyboard = chatter.home()
+    return text + keyboard
+
+
+@chatter.rule(action='오늘의 식단', src='홈', dest='오늘식단')
+def today(data):
+    text = Text('')
+    keyboard = Keyboard(['전체 식단', '점심', '신기숙사'])
+    return text + keyboard
+
+
+@chatter.rule(action=['전체 식단', '점심', '신기숙사'], src='오늘식단', dest='홈')
+def today_step2(data):
+    text = Text('')
+    keyboard = chatter.home()
+    return text + keyboard
 
 
 @chatter.rule(action='자기소개', src='기타', dest='홈')
