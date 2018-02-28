@@ -5,103 +5,159 @@ import pytest
 from flask import url_for
 
 
-def random_user(n=16):
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=n))
-
-
-def data(content, user_key=None, message_type='text'):
-    return {
-        'user_key': user_key if user_key else random_user(),
-        'type': message_type,
-        'content': content,
-    }
-
-
-def post(client, url, data):
-    return client.post(url,
-                       data=json.dumps(data),
-                       content_type='application/json')
-
-
 class TestKeyboard:
     def test_keyboard(self, client):
         url = url_for('api.keyboard')
-        res = client.get(url)
-
-        assert res.status_code == 200
-        assert res.json['type'] == 'buttons'
-        assert res.json['buttons'] == ['식단 보기', '다른 기능']
+        res = Client(client).url(url).get()
+        assert res.json['buttons'] == ['오늘의 식단', '다른 식단 보기', '다른 기능']
 
 
 class TestMessage:
-    def home(self):
-        return ['식단 보기', '다른 기능']
-
-    def test_menu(self, client):
+    @classmethod
+    @pytest.fixture(autouse=True)
+    def set_up(self, client):
         url = url_for('api.message')
-        payload = data('식단 보기')
-        res = post(client, url, payload)
+        self.client = Client(client).url(url)
 
-        assert res.status_code == 200
-        assert '구현중' in res.json['message']['text']
-        assert res.json['keyboard']['type'] == 'buttons'
-        assert res.json['keyboard']['buttons'] == self.home()
+    def test_today(self):
+        res = self.client.post('오늘의 식단')
+        (res
+            .status(200)
+            .keyboard(['전체 식단', '점심', '신기숙사']))
+
+    def test_other(self, client):
+        res = self.client.post('다른 식단 보기')
+        (res
+            .status(200)
+            .keyboard(['내일의 식단', '이번주 식단']))
 
     def test_etc(self, client):
-        url = url_for('api.message')
-        payload = data('다른 기능')
-        res = post(client, url, payload)
+        res = self.client.post('다른 기능')
+        (res
+            .status(200)
+            .contain('안녕하세요')
+            .msg('text')
+            .keyboard(['자기소개', '추가될 기능', '취소']))
 
-        assert res.status_code == 200
-        assert '안녕하세요' in res.json['message']['text']
-        assert res.json['keyboard']['type'] == 'buttons'
-        assert res.json['keyboard']['buttons'] == ['자기소개', '추가될 기능', '취소']
+    def test_today_step2(self, client):
+        res = self.client.post('오늘의 식단', '전체 식단')
+        (res
+            .status(200)
+            .home())
 
-    def test_intro(self, client):
-        url = url_for('api.message')
-        user_key = random_user()
-        payload = data('다른 기능', user_key)
-        post(client, url, payload)
-        payload = data('자기소개', user_key)
-        res = post(client, url, payload)
+        res = self.client.post('오늘의 식단', '점심')
+        (res
+            .status(200)
+            .home())
 
-        assert res.status_code == 200
-        assert '여기서 개발' in res.json['message']['text']
-        assert 'message_button' in res.json['message']
-        assert res.json['keyboard']['type'] == 'buttons'
-        assert res.json['keyboard']['buttons'] == self.home()
+        res = self.client.post('오늘의 식단', '신기숙사')
+        (res
+            .status(200)
+            .home())
 
-    def test_roadmap(self, client):
-        url = url_for('api.message')
-        user_key = random_user()
-        payload = data('다른 기능', user_key)
-        post(client, url, payload)
-        payload = data('추가될 기능', user_key)
-        res = post(client, url, payload)
+    def test_other_step2(self, client):
+        res = self.client.post('다른 식단 보기', '내일의 식단')
+        (res
+            .status(200)
+            .home())
 
-        assert res.status_code == 200
-        assert '다양한 기능' in res.json['message']['text']
-        assert 'message_button' in res.json['message']
-        assert res.json['keyboard']['type'] == 'buttons'
-        assert res.json['keyboard']['buttons'] == self.home()
+        res = self.client.post('다른 식단 보기', '이번주 식단')
+        (res
+            .status(200)
+            .home())
+
+    def test_etc_intro(self, client):
+        res = self.client.post('다른 기능', '자기소개')
+        (res
+            .status(200)
+            .msg('text')
+            .home())
+
+    def test_etc_roadmap(self, client):
+        res = self.client.post('다른 기능', '추가될 기능')
+        (res
+            .status(200)
+            .msg('text')
+            .home())
 
     def test_cancel(self, client):
-        url = url_for('api.message')
-        user_key = random_user()
-        payload = data('다른 기능', user_key)
-        post(client, url, payload)
-        payload = data('취소', user_key)
-        res = post(client, url, payload)
+        res = self.client.post('오늘의 식단', '취소')
+        (res
+            .status(200)
+            .contain('취소하셨습니다')
+            .msg('text')
+            .home())
 
-        assert res.status_code == 200
-        assert '취소' in res.json['message']['text']
-        assert res.json['keyboard']['type'] == 'buttons'
-        assert res.json['keyboard']['buttons'] == self.home()
 
-    def test_invalid(self, client):
-        url = url_for('api.message')
-        payload = data('자기소개')
+class Client:
+    def __init__(self, client):
+        self.client = client
 
-        with pytest.raises(ValueError) as exc_info:
-            post(client, url, payload)
-        assert 'no matching function' in str(exc_info.value)
+    def url(self, url):
+        self.url = url
+        return self
+
+    def get(self):
+        self.response = self.client.get(self.url)
+        return Response(self.response)
+
+    def post(self, *args):
+        user_key = self.random_user()
+        for content in args:
+            payload = self.data(content, user_key)
+            self.response = self.client.post(
+                self.url,
+                data=json.dumps(payload),
+                content_type='application/json'
+            )
+
+        return Response(self.response)
+
+    def random_user(self, n=16):
+        charset = string.ascii_uppercase + string.digits
+        return ''.join(random.choices(charset, k=n))
+
+    def data(self, content, user_key, message_type='text'):
+        return {
+            'user_key': user_key,
+            'type': message_type,
+            'content': content,
+        }
+
+
+class Response:
+    def __init__(self, data):
+        self.response = data
+        self.json = self.response.json
+
+    def status(self, code):
+        assert self.response.status_code == code
+        return self
+
+    def contain(self, target):
+        msg = self.json['message']
+        text = msg.get('text', '')
+        photo = msg.get('photo', {})
+        button = msg.get('message_button', {})
+
+        in_text = target in text
+        in_photo = target in photo.get('url', '')
+        in_button_label = target in button.get('label', '')
+        in_button_url = target in button.get('url', '')
+
+        assert any([in_text, in_photo, in_button_label, in_button_url])
+        return self
+
+    def msg(self, *args):
+        for msg in (args):
+            assert msg in self.json['message']
+        return self
+
+    def keyboard(self, buttons):
+        assert buttons == self.json['keyboard']['buttons']
+        return self
+
+    def home(self):
+        buttons = ['오늘의 식단', '다른 식단 보기', '다른 기능']
+        assert buttons == self.json['keyboard']['buttons']
+        return self
