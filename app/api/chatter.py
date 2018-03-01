@@ -1,6 +1,8 @@
 from chatterbox import Chatter, Keyboard, MessageButton, Text
 
-chatter = Chatter(fallback=True)
+from .menu import chef
+
+chatter = Chatter(memory='sqlite', fallback=True)
 
 
 @chatter.base(name='홈')
@@ -18,30 +20,51 @@ def etc(data):
 
 @chatter.rule(action='다른 식단 보기', src='홈', dest='다른식단')
 def other(data):
-    text = Text('구현중입니다! 조금만 기다려주세요. (야옹)')
+    msg = chef.order('내일')
+    text = Text(msg + '\n\n내일의 간략한 식단입니다. (야옹)')
+    keyboard = Keyboard(['내일의 전체 식단', '내일의 신기숙사', '이번주 식단', '취소'])
+    return text + keyboard
+
+
+@chatter.rule(action='이번주 식단', src='다른식단', dest='홈')
+def other_tomorrow(data):
+    text = Text('이번주의 전체 식단은 아래 링크에서 확인할 수 있습니다!')
     msg_button = MessageButton(label='이번주 식단 보기',
                                url='http://apps.hongik.ac.kr/food/food.php')
-    keyboard = Keyboard(['내일의 식단', '이번주 식단'])
+    keyboard = chatter.home()
     return text + msg_button + keyboard
 
 
-@chatter.rule(action=['내일의 식단', '이번주 식단'], src='다른식단', dest='홈')
+@chatter.rule(action=['내일의 전체 식단', '내일의 신기숙사'], src='다른식단', dest='홈')
 def other_step2(data):
-    text = Text('')
+    content = data['content']
+
+    if content == '내일의 전체 식단':
+        text = Text(chef.order('내일'))
+    if content == '내일의 신기숙사':
+        text = Text(chef.order('내일', place='신기숙사'))
     keyboard = chatter.home()
     return text + keyboard
 
 
 @chatter.rule(action='오늘의 식단', src='홈', dest='오늘식단')
 def today(data):
-    text = Text('')
-    keyboard = Keyboard(['전체 식단', '점심', '신기숙사'])
+    msg = chef.order('오늘')
+    text = Text(msg + '\n\n오늘의 간략한 식단입니다. (야옹)')
+    keyboard = Keyboard(['전체 식단', '점심', '신기숙사', '취소'])
     return text + keyboard
 
 
 @chatter.rule(action=['전체 식단', '점심', '신기숙사'], src='오늘식단', dest='홈')
 def today_step2(data):
-    text = Text('')
+    content = data['content']
+
+    if content == '전체 식단':
+        text = Text(chef.order('오늘', simplify=False))
+    if content == '점심':
+        text = Text(chef.order('오늘', time='점심'))
+    if content == '신기숙사':
+        text = Text(chef.order('오늘', place='신기숙사'))
     keyboard = chatter.home()
     return text + keyboard
 
@@ -75,5 +98,5 @@ def roadmap(data):
 
 @chatter.rule(action='취소', src='*', dest='홈')
 def cancel(data):
-    text = Text('취소하셨습니다.')
+    text = Text('취소하셨습니다. 다른 기능도 이용해보세요!')
     return text + chatter.home()
