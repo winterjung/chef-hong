@@ -90,6 +90,12 @@ class Chef:
     def is_timeout(self, key):
         return self.cache[key]['create_at'] + self.duration < now()
 
+    def is_closed(self, name):
+        return name == '일요일'
+
+    def closed(self):
+        return '오늘은 쉽니다. (야옹)\n- 셰프 홍'
+
     def order(self, day, *, time=None, place=None, simplify=True):
         """
         >>> order('오늘')
@@ -112,7 +118,10 @@ class Chef:
         weekday = day_to_weekday(day)
         name = Weekday(weekday).name
 
-        text = chef._get(name, time, place, simplify)
+        if self.is_closed(name):
+            text = self.closed()
+        else:
+            text = self._get(name, time, place, simplify)
         return text
 
 
