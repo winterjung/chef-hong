@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7cd93adbe1907b2dbf164d0614d9343144db97330b308cc6e86e26c2c78ff113"
+            "sha256": "ff84a4798e1fa415f16c9903ba8c86bc937f7d302ad83c23cd42cccce63aebff"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -81,6 +81,13 @@
             ],
             "version": "==2.10"
         },
+        "limits": {
+            "hashes": [
+                "sha256:9df578f4161017d79f5188609f1d65f6b639f8aad2914c3960c9252e56a0ff95",
+                "sha256:a017b8d9e9da6761f4574642149c337f8f540d4edfe573fb91ad2c4001a2bc76"
+            ],
+            "version": "==1.3"
+        },
         "lxml": {
             "hashes": [
                 "sha256:41f59cbdab232f11680d5d4dec9f2e6782fd24d78e37ee833447702e34e675f4",
@@ -126,6 +133,20 @@
                 "sha256:4771db76bd14352eba006463656aef990a0147a0eeaf094725097acfa90442bf"
             ],
             "version": "==1.4.0"
+        },
+        "python-logstash-async": {
+            "hashes": [
+                "sha256:d234ecd70b3191abde7557904fa9557468f0bb844a7989aa1039e0ff550b1eea",
+                "sha256:47a0ed900b681b8a5c61e6de2d1b75215e1aa2aaa03283d916ef14dd981fe71b"
+            ],
+            "version": "==1.4.1"
+        },
+        "six": {
+            "hashes": [
+                "sha256:832dc0e10feb1aa2c68dcc57dbb658f1c7e65b9b61af69048abc87a2db00a0eb",
+                "sha256:70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9"
+            ],
+            "version": "==1.11.0"
         },
         "sqlalchemy": {
             "hashes": [

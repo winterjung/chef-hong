@@ -1,7 +1,8 @@
 from flask import jsonify, request
 
 from app.api import api
-from app.api.chatter import chatter
+from app.api.chatter import chatter, error
+from .logger import logger
 
 
 @api.route('/keyboard', methods=['GET'])
@@ -11,7 +12,12 @@ def keyboard():
 
 @api.route('/message', methods=['POST'])
 def message():
-    return jsonify(chatter.route(request.json))
+    try:
+        response = chatter.route(request.json)
+    except Exception as exc_info:
+        logger.error('error', extra={'info': str(exc_info.value)})
+        response = error()
+    return jsonify(response)
 
 
 @api.route('/friend', methods=['POST'])
