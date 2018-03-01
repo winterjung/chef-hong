@@ -23,13 +23,15 @@ class TestMessage:
         res = self.client.post('오늘의 식단')
         (res
             .status(200)
-            .keyboard(['전체 식단', '점심', '신기숙사']))
+            .contain('오늘의 간략한 식단', '식당')
+            .keyboard(['전체 식단', '점심', '신기숙사', '취소']))
 
     def test_other(self, client):
         res = self.client.post('다른 식단 보기')
         (res
             .status(200)
-            .keyboard(['내일의 식단', '이번주 식단']))
+            .contain('내일의 간략한 식단', '식당')
+            .keyboard(['내일의 전체 식단', '내일의 신기숙사', '이번주 식단', '취소']))
 
     def test_etc(self, client):
         res = self.client.post('다른 기능')
@@ -43,27 +45,38 @@ class TestMessage:
         res = self.client.post('오늘의 식단', '전체 식단')
         (res
             .status(200)
+            .contain('아침', '점심', '저녁')
             .home())
 
         res = self.client.post('오늘의 식단', '점심')
         (res
             .status(200)
+            .contain('점심')
             .home())
 
         res = self.client.post('오늘의 식단', '신기숙사')
         (res
             .status(200)
+            .contain('기숙사')
             .home())
 
     def test_other_step2(self, client):
-        res = self.client.post('다른 식단 보기', '내일의 식단')
+        res = self.client.post('다른 식단 보기', '내일의 전체 식단')
         (res
             .status(200)
+            .contain('아침', '점심', '저녁')
+            .home())
+
+        res = self.client.post('다른 식단 보기', '내일의 신기숙사')
+        (res
+            .status(200)
+            .contain('아침', '점심', '저녁', '기숙사')
             .home())
 
         res = self.client.post('다른 식단 보기', '이번주 식단')
         (res
             .status(200)
+            .contain('이번주')
             .home())
 
     def test_etc_intro(self, client):
@@ -134,18 +147,19 @@ class Response:
         assert self.response.status_code == code
         return self
 
-    def contain(self, target):
-        msg = self.json['message']
-        text = msg.get('text', '')
-        photo = msg.get('photo', {})
-        button = msg.get('message_button', {})
+    def contain(self, *args):
+        for target in args:
+            msg = self.json['message']
+            text = msg.get('text', '')
+            photo = msg.get('photo', {})
+            button = msg.get('message_button', {})
 
-        in_text = target in text
-        in_photo = target in photo.get('url', '')
-        in_button_label = target in button.get('label', '')
-        in_button_url = target in button.get('url', '')
+            in_text = target in text
+            in_photo = target in photo.get('url', '')
+            in_button_label = target in button.get('label', '')
+            in_button_url = target in button.get('url', '')
 
-        assert any([in_text, in_photo, in_button_label, in_button_url])
+            assert any([in_text, in_photo, in_button_label, in_button_url])
         return self
 
     def msg(self, *args):
