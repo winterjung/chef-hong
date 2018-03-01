@@ -4,7 +4,6 @@ import re
 import requests
 from pyquery import PyQuery
 
-
 PLACE_RULE = dict(
     학생회관=2,
     남문관=4,
