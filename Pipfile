@@ -13,6 +13,7 @@ flask-sqlalchemy = "*"
 flask-script = "*"
 pyquery = "*"
 python-logstash-async = "*"
+gunicorn = "*"
 
 
 [dev-packages]
