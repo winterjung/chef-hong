@@ -15,7 +15,7 @@ def message():
     try:
         response = chatter.route(request.json)
     except Exception as exc_info:
-        logger.error('error', extra={'info': str(exc_info.value)})
+        logger.error('error', extra={'info': str(exc_info)})
         response = error()
     return jsonify(response)
 
