@@ -60,7 +60,7 @@ class Weekday(Enum):
 
 
 class Chef:
-    def __init__(self, duration=60, formatter=DefaultFormatter):
+    def __init__(self, duration=3600, formatter=DefaultFormatter):
         """
         cache = {
             '3.점심.학생회관.False': {
@@ -73,8 +73,12 @@ class Chef:
         self.cache = {}
         self.duration = duration
         self.formatter = formatter
+        self.create_at = now()
 
     def _get(self, weekday, time, place, simplify):
+        if self.is_outdated():
+            self.all_menu = update_all_menu()
+
         key = '{}.{}.{}.{}'.format(weekday, time, place, simplify)
         if key not in self.cache or self.is_timeout(key):
             menu = self.all_menu.day(weekday).time(time).place(place)
@@ -86,6 +90,9 @@ class Chef:
             }
 
         return self.cache[key]['text']
+
+    def is_outdated(self):
+        return self.create_at + self.duration < now()
 
     def is_timeout(self, key):
         return self.cache[key]['create_at'] + self.duration < now()
