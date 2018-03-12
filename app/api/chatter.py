@@ -28,7 +28,7 @@ def other(data):
     logger.info('message', extra={'button': '다른 식단 보기'})
 
     msg = chef.order('내일')
-    text = Text(msg + '\n\n내일의 간략한 식단입니다. (야옹)')
+    text = Text(msg)
     keyboard = Keyboard(['내일의 전체 식단', '내일의 신기숙사', '이번주 식단', '취소'])
     return text + keyboard
 
@@ -62,7 +62,7 @@ def today(data):
     logger.info('message', extra={'button': '오늘의 식단'})
 
     msg = chef.order('오늘')
-    text = Text(msg + '\n\n오늘의 간략한 식단입니다. (야옹)')
+    text = Text(msg)
     keyboard = Keyboard(['전체 식단', '점심', '신기숙사', '취소'])
     return text + keyboard
 

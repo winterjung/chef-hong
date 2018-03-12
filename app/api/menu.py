@@ -129,6 +129,7 @@ class Chef:
             text = self.closed()
         else:
             text = self._get(name, time, place, simplify)
+            text += '\n\n오늘의 간략한 식단입니다. (야옹)'
         return text
 
 
