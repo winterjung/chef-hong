@@ -19,6 +19,8 @@ def create_app(config_name):
     db.init_app(app)
 
     from app.api import api as api_blueprint
+    from app.util import util as util_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
+    app.register_blueprint(util_blueprint, url_prefix='/util')
 
     return app
