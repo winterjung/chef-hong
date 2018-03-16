@@ -126,9 +126,10 @@ class Chef:
         name = Weekday(weekday).name
 
         if self.is_closed(name):
-            text = self.closed()
-        else:
-            text = self._get(name, time, place, simplify)
+            return self.closed()
+
+        text = self._get(name, time, place, simplify)
+        if simplify:
             text += '\n\n{}의 간략한 식단입니다. (야옹)'.format(day)
         return text
 
