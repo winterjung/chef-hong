@@ -7,7 +7,7 @@ from flask import url_for
 
 class TestKeyboard:
     def test_keyboard(self, client, mocker):
-        mocker.patch('logstash_async.handler.AsynchronousLogstashHandler')
+        mocker.patch('app.api.chatter.logger')
         url = url_for('api.keyboard')
         res = Client(client).url(url).get()
         assert res.json['buttons'] == ['오늘의 식단', '다른 식단 보기', '다른 기능']
@@ -17,7 +17,8 @@ class TestMessage:
     @classmethod
     @pytest.fixture(autouse=True)
     def set_up(self, client, mocker):
-        mocker.patch('logstash_async.handler.AsynchronousLogstashHandler')
+        mocker.patch('app.api.chatter.logger')
+        mocker.patch('app.api.menu.day_to_weekday', **{'return_value': 0})
         url = url_for('api.message')
         self.client = Client(client).url(url)
 
