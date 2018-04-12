@@ -13,6 +13,8 @@ python-logstash-async = "*"
 gunicorn = "*"
 requests = "*"
 pony = "*"
+setproctitle = "*"
+gevent = "*"
 
 [dev-packages]
 tox = "*"
