@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "48579c479d506128bf4ae6fc27d07a3f6dc56bc08d417f84a15fd58f43c088e9"
+            "sha256": "03dd09f2c345126daab6d6223177022a9a3f9044db7d3bdca9346f5a7f71e38c"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -147,6 +147,13 @@
             ],
             "version": "==1.0"
         },
+        "pony": {
+            "hashes": [
+                "sha256:114b3e075e79de27a729bbc59812290334dd82644d41120df9d556336cffa67c"
+            ],
+            "index": "pypi",
+            "version": "==0.7.3"
+        },
         "pyquery": {
             "hashes": [
                 "sha256:07987c2ed2aed5cba29ff18af95e56e9eb04a2249f42ce47bddfb37f487229a3",
@@ -180,9 +187,9 @@
         },
         "sqlalchemy": {
             "hashes": [
-                "sha256:249000654107a420a40200f1e0b555a79dfd4eff235b2ff60bc77714bd045f2d"
+                "sha256:7cb00cc9b9f92ef8b4391c8a2051f81eeafefe32d63c6b395fd51401e9a39edb"
             ],
-            "version": "==1.2.5"
+            "version": "==1.2.6"
         },
         "urllib3": {
             "hashes": [

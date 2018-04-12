@@ -1,9 +1,11 @@
 import json
 import random
 import string
+
 import pytest
 
 from app import create_app
+from app import db as app_db
 
 
 @pytest.fixture(scope='function')
@@ -19,6 +21,11 @@ def client(app, mocker):
         mocker.patch('app.api.menu.day_to_weekday', **{'return_value': 0})
         client = Client(client)
         yield client
+
+
+@pytest.yield_fixture(scope='function')
+def db(client):
+    yield app_db
 
 
 class Client:

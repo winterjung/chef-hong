@@ -1,12 +1,11 @@
 import pathlib
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from pony.orm import Database
 
 from config import config
 
 basedir = pathlib.Path(__file__).cwd()
-
-db = SQLAlchemy()
+db = Database()
 
 
 def create_app(config_name):
@@ -15,8 +14,8 @@ def create_app(config_name):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     config[config_name].init_app(app)
-
-    db.init_app(app)
+    db.bind(provider='sqlite', filename=':memory:')
+    db.generate_mapping(create_tables=True)
 
     from app.api import api as api_blueprint
     from app.util import util as util_blueprint

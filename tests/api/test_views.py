@@ -97,4 +97,3 @@ class TestMessage:
             .contain('취소하셨습니다')
             .msg('text')
             .home())
-

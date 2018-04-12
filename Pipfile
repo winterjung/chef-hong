@@ -1,12 +1,9 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 flask = "*"
 "chatterbox.py" = "*"
 flask-sqlalchemy = "*"
@@ -15,10 +12,9 @@ pyquery = "*"
 python-logstash-async = "*"
 gunicorn = "*"
 requests = "*"
-
+pony = "*"
 
 [dev-packages]
-
 tox = "*"
 pylint = "*"
 pytest = "*"
