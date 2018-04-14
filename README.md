@@ -12,6 +12,11 @@
 
 **학식알리미 Chef Hong**의 주요 변경 사항이 기록되어 있습니다.
 
+### [1.2.0]
+
+> 2018-04-14
+- Fixture를 분리하고 Test case 개선
+- Alembic, SQLAlchemy 사용
 
 ### [1.1.6]
 
@@ -79,6 +84,7 @@
 [1.1.4]: https://github.com/JungWinter/chef-hong/compare/v1.1.3...v1.1.4
 [1.1.5]: https://github.com/JungWinter/chef-hong/compare/v1.1.4...v1.1.5
 [1.1.6]: https://github.com/JungWinter/chef-hong/compare/v1.1.5...v1.1.6
+[1.2.0]: https://github.com/JungWinter/chef-hong/compare/v1.1.6...v1.2.0
 
 [python-logstash-async]: https://github.com/eht16/python-logstash-async
 [gunicorn]: http://gunicorn.org/
