@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2943b7a5f5908a716108c467c584986c534f688a4c8565eb0c05122647243cc6"
+            "sha256": "c3ea00c5d3fb29903b5a8c63cb260ee4650261b533e1c8819fdaeaaeac7e1d74"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -14,6 +14,12 @@
         ]
     },
     "default": {
+        "alembic": {
+            "hashes": [
+                "sha256:85bd3ea7633024e4930900bc64fb58f9742dedbc6ebb6ecf25be2ea9a3c1b32e"
+            ],
+            "version": "==0.9.9"
+        },
         "certifi": {
             "hashes": [
                 "sha256:14131608ad2fd56836d33a71ee60fa1c82bc9d2c8d98b7bdbc631fe1b3cd1296",
@@ -57,6 +63,14 @@
             ],
             "index": "pypi",
             "version": "==0.12.2"
+        },
+        "flask-migrate": {
+            "hashes": [
+                "sha256:493f9b3795985b9b4915bf3b7d16946697f027b73545384e7d9e3a79f989d2fe",
+                "sha256:b709ca8642559c3c5a81a33ab10839fa052177accd5ba821047a99db635255ed"
+            ],
+            "index": "pypi",
+            "version": "==2.1.1"
         },
         "flask-script": {
             "hashes": [
@@ -198,18 +212,17 @@
             ],
             "version": "==4.2.1"
         },
+        "mako": {
+            "hashes": [
+                "sha256:4e02fde57bd4abb5ec400181e4c314f56ac3e49ba4fb8b0d50bba18cb27d25ae"
+            ],
+            "version": "==1.0.7"
+        },
         "markupsafe": {
             "hashes": [
                 "sha256:a6be69091dac236ea9c6bc7d012beab42010fa914c459791d627dad4910eb665"
             ],
             "version": "==1.0"
-        },
-        "pony": {
-            "hashes": [
-                "sha256:114b3e075e79de27a729bbc59812290334dd82644d41120df9d556336cffa67c"
-            ],
-            "index": "pypi",
-            "version": "==0.7.3"
         },
         "pyquery": {
             "hashes": [
@@ -218,6 +231,19 @@
             ],
             "index": "pypi",
             "version": "==1.4.0"
+        },
+        "python-dateutil": {
+            "hashes": [
+                "sha256:3220490fb9741e2342e1cf29a503394fdac874bc39568288717ee67047ff29df",
+                "sha256:9d8074be4c993fbe4947878ce593052f71dac82932a677d49194d8ce9778002e"
+            ],
+            "version": "==2.7.2"
+        },
+        "python-editor": {
+            "hashes": [
+                "sha256:a3c066acee22a1c94f63938341d4fb374e3fdd69366ed6603d7b24bed1efc565"
+            ],
+            "version": "==1.0.3"
         },
         "python-logstash-async": {
             "hashes": [

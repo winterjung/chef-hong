@@ -4,17 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
+Flask = "*"
 "chatterbox.py" = "*"
-flask-sqlalchemy = "*"
-flask-script = "*"
+Flask-SQLAlchemy = "*"
+Flask-Script = "*"
 pyquery = "*"
 python-logstash-async = "*"
 gunicorn = "*"
 requests = "*"
-pony = "*"
 setproctitle = "*"
 gevent = "*"
+flask-migrate = "*"
 
 [dev-packages]
 tox = "*"
