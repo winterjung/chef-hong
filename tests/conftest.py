@@ -6,6 +6,7 @@ import pytest
 
 from app import create_app
 from app import db as app_db
+from app.api.chatter import chatter
 
 
 @pytest.fixture(scope='function')
@@ -25,7 +26,10 @@ def client(app, mocker):
 
 @pytest.yield_fixture(scope='function')
 def db(client):
+    app_db.create_all()
     yield app_db
+    app_db.session.remove()
+    app_db.drop_all()
 
 
 class Client:
@@ -98,6 +102,6 @@ class Response:
         return self
 
     def home(self):
-        buttons = ['오늘의 식단', '다른 식단 보기', '다른 기능']
+        buttons = chatter.home().buttons
         assert buttons == self.json['keyboard']['buttons']
         return self
