@@ -1,7 +1,7 @@
 from chatterbox import Chatter, Keyboard, MessageButton, Text
 
-from .menu import chef
 from .logger import logger
+from .menu import chef
 
 chatter = Chatter(memory='sqlite', fallback=True)
 

@@ -2,6 +2,7 @@ from flask import jsonify, request
 
 from app.api import api
 from app.api.chatter import chatter, error
+
 from .logger import logger
 
 

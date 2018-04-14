@@ -1,4 +1,5 @@
 import logging
+
 from logstash_async.handler import AsynchronousLogstashHandler
 
 host = 'localhost'
