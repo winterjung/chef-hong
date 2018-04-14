@@ -1,12 +1,11 @@
-from pony.orm import db_session
-
 from app.models import User
 
 
-@db_session
 def test_user_create(db):
-    User(user_key='test', nickname='guest')
+    user = User(user_key='test', nickname='guest')
+    db.session.add(user)
     db.commit()
-    user = User.get(user_key='test')
-    assert user is not None
+
+    assert user.id is not None
+    assert user.user_key == 'test'
     assert user.nickname == 'guest'

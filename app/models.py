@@ -14,9 +14,11 @@ class ModelMixin:
 
 class User(ModelMixin, db.Model):
     user_key = db.Column(db.String, nullable=False, unique=True)
+    nickname = db.Column(db.String, nullable=True)
 
-    def __init__(self, user_key):
+    def __init__(self, user_key, nickname=None):
         self.user_key = user_key
+        self.nickname = nickname
 
     def __repr__(self):
         return '<User {} {}>'.format(self.id, self.user_key)
