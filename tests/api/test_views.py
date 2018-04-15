@@ -97,3 +97,24 @@ class TestMessage:
             .contain('취소하셨습니다')
             .msg('text')
             .home())
+
+
+def test_add_firend(api_client):
+    url = url_for('api.add_friend')
+    res = api_client.post(url)
+    assert res.status_code == 200
+    assert res.json['message'] == 'SUCCESS'
+
+
+def test_block_friend(api_client):
+    url = url_for('api.block_friend', key='test_user_key')
+    res = api_client.delete(url)
+    assert res.status_code == 200
+    assert res.json['message'] == 'SUCCESS'
+
+
+def test_exit_friend(api_client):
+    url = url_for('api.exit_friend', key='test_user_key')
+    res = api_client.delete(url)
+    assert res.status_code == 200
+    assert res.json['message'] == 'SUCCESS'

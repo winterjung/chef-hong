@@ -1,6 +1,7 @@
 import json
 import random
 import string
+from functools import wraps
 
 import pytest
 
@@ -21,6 +22,14 @@ def client(app, mocker):
         mocker.patch('app.api.chatter.logger')
         mocker.patch('app.api.menu.day_to_weekday', **{'return_value': 0})
         client = Client(client)
+        yield client
+
+
+@pytest.yield_fixture(scope='function')
+def api_client(app):
+    with app.test_client() as client:
+        client.post = ensure_json(client.post)
+        client.put = ensure_json(client.put)
         yield client
 
 
@@ -105,3 +114,16 @@ class Response:
         buttons = chatter.home().buttons
         assert buttons == self.json['keyboard']['buttons']
         return self
+
+
+def ensure_json(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        kwargs['content_type'] = kwargs.get('content_type', 'application/json')
+        if kwargs['content_type'] == 'application/json':
+            data = kwargs.get('data')
+            kwargs['data'] = json.dumps(data)
+
+        result = func(*args, **kwargs)
+        return result
+    return wrapper
