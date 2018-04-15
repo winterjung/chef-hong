@@ -45,11 +45,13 @@ class ProductionConfig(Config):
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + str(basedir / 'data.sqlite')
+    SENTRY_DSN = os.environ.get('SENTRY_DSN')
 
     @classmethod
     def init_app(cls, app):
         super().init_app(app)
-        print('THIS IS DEVELOPMENT CONFIG!')
+        print('BE CAREFUL! THIS IS PRODUCTION CONFIG!')
+        assert os.environ.get('SENTRY_DSN'), 'SENTRY_DSN is not set'
 
 
 class UnixConfig(ProductionConfig):

@@ -15,6 +15,7 @@ requests = "*"
 setproctitle = "*"
 gevent = "*"
 flask-migrate = "*"
+raven = {extras = ["flask"]}
 
 [dev-packages]
 tox = "*"

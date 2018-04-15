@@ -1,5 +1,6 @@
 from flask import jsonify, request
 
+from app import sentry
 from app.api import api
 from app.api.chatter import chatter, error
 
@@ -16,6 +17,7 @@ def message():
     try:
         response = chatter.route(request.json)
     except Exception as exc_info:
+        sentry.captureException()
         logger.error('error', extra={'info': str(exc_info)})
         response = error()
     return jsonify(response)
