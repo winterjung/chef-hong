@@ -16,6 +16,7 @@ setproctitle = "*"
 gevent = "*"
 flask-migrate = "*"
 raven = {extras = ["flask"]}
+logzero = "*"
 
 [dev-packages]
 tox = "*"
