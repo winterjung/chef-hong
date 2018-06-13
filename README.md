@@ -12,6 +12,17 @@
 
 **학식알리미 Chef Hong**의 주요 변경 사항이 기록되어 있습니다.
 
+### [1.2.1]
+
+> 2018-04-15
+- Sentry 적용
+
+> 2018-06-13
+- Logzero 적용
+- `FLASK_ENV`가 `production`이 아닐 때 logstash로 로깅 방지
+- 기본적인 로깅 자동화
+- **의견 보내기** 버튼 추가
+
 ### [1.2.0]
 
 > 2018-04-14
@@ -85,6 +96,7 @@
 [1.1.5]: https://github.com/JungWinter/chef-hong/compare/v1.1.4...v1.1.5
 [1.1.6]: https://github.com/JungWinter/chef-hong/compare/v1.1.5...v1.1.6
 [1.2.0]: https://github.com/JungWinter/chef-hong/compare/v1.1.6...v1.2.0
+[1.2.1]: https://github.com/JungWinter/chef-hong/compare/v1.2.0...v1.2.1
 
 [python-logstash-async]: https://github.com/eht16/python-logstash-async
 [gunicorn]: http://gunicorn.org/
