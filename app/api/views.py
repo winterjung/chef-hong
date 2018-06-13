@@ -1,10 +1,11 @@
+import os
+
 from flask import jsonify, request
 
 from app import sentry
 from app.api import api
 from app.api.chatter import chatter, error
-
-from .logger import logger
+from app.api.logger import logger
 
 
 @api.route('/keyboard', methods=['GET'])
@@ -15,10 +16,16 @@ def keyboard():
 @api.route('/message', methods=['POST'])
 def message():
     try:
-        response = chatter.route(request.json)
+        data = request.json
+        response = chatter.route(data)
     except Exception as exc_info:
-        sentry.captureException()
-        logger.error('error', extra={'info': str(exc_info)})
+        if os.environ.get('FLASK_ENV') == 'production':
+            sentry.captureException()
+        logger.exception(
+            'error %s',
+            data.get('content'),
+            extra={'info': str(exc_info)}
+        )
         response = error()
     return jsonify(response)
 
