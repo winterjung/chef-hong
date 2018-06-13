@@ -11,7 +11,7 @@ chatter = Chatter(memory='sqlite', fallback=True)
 def home_keyboard():
     logger.info('keyboard')
 
-    home_buttons = ['오늘의 식단', '다른 식단 보기', '다른 기능']
+    home_buttons = ['오늘의 식단', '다른 식단 보기', '다른 기능', '의견 보내기']
     return Keyboard(home_buttons)
 
 
@@ -115,9 +115,28 @@ def cancel(data):
     return text + chatter.home()
 
 
+@chatter.rule(action='의견 보내기', src='홈', dest='의견')
+@basic_log(cascade=True)
+def opinion(data):
+    text = Text(
+        '아무말이나 보내주셔도 괜찮습니다! 개발자가 직접 확인하겠습니다 (최고)\n'
+        '* 개발자는 학식 업체나 학교 직원이 아닙니다. 참고해주세요!')
+    keyboard = Keyboard(type='text')
+    return text + keyboard
+
+
+@chatter.rule(action='*', src='의견', dest='홈')
+def listen(data):
+    answer = data.get('content')
+    logger.info(answer, extra=dict(text=answer))
+    text = Text(
+        '의견을 보내주셔서 감사합니다! 다른 건의사항이나 의견이 있으시다면 '
+        '또 보내주셔도 좋습니다 (굿)')
+    return text + chatter.home()
+
+
 def error():
     text = Text('알 수 없는 오류가 발생했습니다!\n이번주 식단 기능만 활성화됩니다.')
     msg_button = MessageButton(label='이번주 식단 보기',
                                url='http://apps.hongik.ac.kr/food/food.php')
-    keyboard = Keyboard(['오늘의 식단', '다른 식단 보기', '다른 기능'])
-    return text + msg_button + keyboard
+    return text + msg_button + chatter.home()

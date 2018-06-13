@@ -6,7 +6,8 @@ class TestKeyboard:
     def test_keyboard(self, client):
         url = url_for('api.keyboard')
         res = client.url(url).get()
-        assert res.json['buttons'] == ['오늘의 식단', '다른 식단 보기', '다른 기능']
+        keyboard = ['오늘의 식단', '다른 식단 보기', '다른 기능', '의견 보내기']
+        assert res.json['buttons'] == keyboard
 
 
 class TestMessage:
