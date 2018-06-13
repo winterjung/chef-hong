@@ -1,9 +1,9 @@
 from enum import Enum
 
-from . import request
-from .formatter import DefaultFormatter
-from .utils import (assert_daily_menus, assert_places, day_to_weekday, grouper,
-                    listify, now)
+from app.api import request
+from app.api.formatter import DefaultFormatter
+from app.api.utils import (assert_daily_menus, assert_places, day_to_weekday,
+                           grouper, listify, now)
 
 
 def generate_combined_menu():
