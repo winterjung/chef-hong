@@ -5,10 +5,10 @@ import requests
 from pyquery import PyQuery
 
 PLACE_RULE = dict(
-    학생회관=2,
+    학생회관=3,
     남문관=4,
     교직원=2,
-    신기숙사=3)
+    신기숙사=4)
 
 
 def pq(url=None):
