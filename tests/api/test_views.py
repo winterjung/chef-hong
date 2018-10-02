@@ -6,7 +6,8 @@ class TestKeyboard:
     def test_keyboard(self, client):
         url = url_for('api.keyboard')
         res = client.url(url).get()
-        assert res.json['buttons'] == ['오늘의 식단', '다른 식단 보기', '다른 기능']
+        keyboard = ['오늘의 식단', '다른 식단 보기', '다른 기능', '의견 보내기']
+        assert res.json['buttons'] == keyboard
 
 
 class TestMessage:
@@ -97,3 +98,24 @@ class TestMessage:
             .contain('취소하셨습니다')
             .msg('text')
             .home())
+
+
+def test_add_firend(api_client):
+    url = url_for('api.add_friend')
+    res = api_client.post(url)
+    assert res.status_code == 200
+    assert res.json['message'] == 'SUCCESS'
+
+
+def test_block_friend(api_client):
+    url = url_for('api.block_friend', key='test_user_key')
+    res = api_client.delete(url)
+    assert res.status_code == 200
+    assert res.json['message'] == 'SUCCESS'
+
+
+def test_exit_friend(api_client):
+    url = url_for('api.exit_friend', key='test_user_key')
+    res = api_client.delete(url)
+    assert res.status_code == 200
+    assert res.json['message'] == 'SUCCESS'

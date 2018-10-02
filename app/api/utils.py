@@ -1,5 +1,8 @@
 import itertools
 from datetime import datetime, timedelta
+from functools import wraps
+
+from app.api.logger import logger
 
 
 def listify(obj):
@@ -85,3 +88,24 @@ def assert_places(places, times, subtitles):
     """
     assert len(places) == len(times)
     assert len(set(places)) == len(subtitles)
+
+
+def basic_log(button=None, user_key=True, cascade=False):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(data, *args, **kwargs):
+            if cascade and button is None:
+                text = data.get('content')
+            if cascade and button:
+                text = button + data.get('content')
+            extra = dict(button=text)
+
+            if user_key:
+                user = data.get('user_key')
+                extra['user_key'] = user
+                logger.debug(user)
+            logger.info('message', extra=extra)
+            result = func(data, *args, **kwargs)
+            return result
+        return wrapper
+    return decorator

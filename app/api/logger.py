@@ -1,12 +1,13 @@
-import logging
+import os
 
 from logstash_async.handler import AsynchronousLogstashHandler
+from logzero import logger as _logger
 
 host = 'localhost'
 port = 5959
 
-logger = logging.getLogger('chef-hong-logger')
-logger.setLevel(logging.INFO)
+logger = _logger
 
-handler = AsynchronousLogstashHandler(host, port, None)
-logger.addHandler(handler)
+if os.environ.get('FLASK_ENV') == 'production':
+    handler = AsynchronousLogstashHandler(host, port, None)
+    logger.addHandler(handler)
