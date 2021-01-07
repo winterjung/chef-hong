@@ -1,34 +1,34 @@
--i https://pypi.python.org/simple
-alembic==1.0.5
+-i https://pypi.python.org/simple/
+alembic==1.4.3
 blinker==1.4
-certifi==2018.11.29
+certifi==2020.12.5
 chardet==3.0.4
 chatterbox.py==0.2.5
-click==7.0
-cssselect==1.0.3
+click==7.1.2
+cssselect==1.1.0
 flask-migrate==2.3.1
 flask-script==2.0.6
 flask-sqlalchemy==2.3.2
 flask==1.0.2
 gevent==1.3.7
-greenlet==0.4.15 ; platform_python_implementation == 'CPython'
+greenlet==0.4.17 ; platform_python_implementation == 'CPython'
 gunicorn==19.9.0
 idna==2.8
 itsdangerous==1.1.0
-jinja2==2.10
-limits==1.3
+jinja2==2.11.2
+limits==1.5.1
 logzero==1.5.0
-lxml==4.2.5
-mako==1.0.7
-markupsafe==1.1.0
+lxml==4.6.2
+mako==1.1.3
+markupsafe==1.1.1
 pyquery==1.4.0
-python-dateutil==2.7.5
-python-editor==1.0.3
+python-dateutil==2.8.1
+python-editor==1.0.4
 python-logstash-async==1.4.1
 raven[flask]==6.10.0
 requests==2.21.0
 setproctitle==1.1.10
-six==1.12.0
-sqlalchemy==1.2.15
-urllib3==1.24.1
-werkzeug==0.14.1
+six==1.15.0
+sqlalchemy==1.3.22
+urllib3==1.24.3
+werkzeug==1.0.1
